@@ -1,3 +1,5 @@
+import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
+import { Product } from '@domain/entities/product.entity';
 import { User } from '@domain/entities/user.entity';
 
 export abstract class UserRepository {
@@ -10,4 +12,9 @@ export abstract class UserRepository {
   abstract update(user: User): Promise<User>;
 
   abstract getUserWithPassword(email: string): Promise<User>;
+
+  abstract getMyProducts(
+    userId: string,
+    filters: ProductFiltersDto,
+  ): Promise<Product[]>;
 }

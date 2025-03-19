@@ -88,4 +88,40 @@ export class ProductRepositoryImpl implements ProductRepository {
     await this.productRepository.softDelete({ id });
     return entity;
   }
+
+  async findByUserId(userId: string, filters: ProductFiltersDto) {
+    const { page = 1, limit = 15, ...restFilters } = filters;
+    const where: FindOptionsWhere<ProductEntity> = {};
+
+    if (restFilters.name) {
+      where.name = ILike(`%${restFilters.name}%`);
+    }
+
+    if (restFilters.sku) {
+      where.sku = ILike(`%${restFilters.sku}%`);
+    }
+
+    if (restFilters.minPrice !== undefined) {
+      where.price = MoreThanOrEqual(restFilters.minPrice);
+    }
+
+    if (restFilters.maxPrice !== undefined) {
+      where.price = LessThanOrEqual(restFilters.maxPrice);
+    }
+
+    const entities = await this.productRepository.find({
+      where: {
+        ...where,
+        user: { id: userId },
+      },
+      relations: ['user'],
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return entities.map(ProductMapper.toDomain);
+  }
 }

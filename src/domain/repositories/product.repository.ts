@@ -11,4 +11,9 @@ export abstract class ProductRepository {
   abstract update(product: Product): Promise<Product>;
 
   abstract delete(id: string): Promise<Product>;
+
+  abstract findByUserId(
+    userId: string,
+    filters: ProductFiltersDto,
+  ): Promise<Product[]>;
 }
