@@ -36,7 +36,9 @@ export class AuthService {
     return { ...response, accessToken };
   }
 
-  async login(dto: LoginUserDto): Promise<{ accessToken: string }> {
+  async login(
+    dto: LoginUserDto,
+  ): Promise<Omit<UserResponseDto, 'password'> & { accessToken: string }> {
     const user = await this.userRepository.getUserWithPassword(dto.email);
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
@@ -44,9 +46,10 @@ export class AuthService {
     if (!isPasswordValid)
       throw new UnauthorizedException('Invalid credentials');
 
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const response = new UserResponseDto(user);
+    const payload = { sub: user.id, email: user.email, role: user.roles };
     const accessToken = this.jwtService.sign(payload);
 
-    return { accessToken };
+    return { ...response, accessToken };
   }
 }

@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { User } from '@domain/entities/user.entity';
 import { UserRepository } from '@domain/repositories/user.repository';
 import { UserEntity } from '@infrastructure/db/entities/user.entity';
 import { UserMapper } from '@infrastructure/mappers/user.mapper';
-import { User } from '@root/domain/entities/user.entity';
 
 @Injectable()
 export class UserRepositoryImpl implements UserRepository {
@@ -38,7 +38,7 @@ export class UserRepositoryImpl implements UserRepository {
   async getUserWithPassword(email: string) {
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ['id', 'name', 'email', 'password'],
+      select: ['id', 'name', 'email', 'password', 'roles'],
     });
     return user ? UserMapper.toDomain(user) : null;
   }

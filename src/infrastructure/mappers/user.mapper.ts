@@ -18,7 +18,7 @@ export class UserMapper {
     entity.name = user.name;
     entity.email = user.email;
     entity.password = user.password;
-    entity.roles = user.role;
+    entity.roles = user.roles;
     return entity;
   }
 }

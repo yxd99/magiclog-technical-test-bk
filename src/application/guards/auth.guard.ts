@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
       });
 
       request.user = {
-        id: payload.id,
+        sub: payload.sub,
         email: payload.email,
         role: payload.role,
       };
