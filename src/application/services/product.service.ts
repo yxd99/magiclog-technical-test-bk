@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 
 import { CreateProductDto } from '@application/dtos/product/create-product.dto';
+import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { UpdateProductDto } from '@application/dtos/product/update-product.dto';
 import { Product } from '@domain/entities/product.entity';
 import { ProductRepository } from '@domain/repositories/product.repository';
@@ -17,8 +18,8 @@ export class ProductService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async findAll() {
-    return this.productRepository.findAll();
+  async findAll(filters: ProductFiltersDto) {
+    return this.productRepository.findAll(filters);
   }
 
   async findOne(id: string) {

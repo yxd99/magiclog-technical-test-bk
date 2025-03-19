@@ -1,7 +1,8 @@
+import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { Product } from '@domain/entities/product.entity';
 
 export abstract class ProductRepository {
-  abstract findAll(): Promise<Product[]>;
+  abstract findAll(filters: ProductFiltersDto): Promise<Product[]>;
 
   abstract findOne(id: string): Promise<Product>;
 

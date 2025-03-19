@@ -6,11 +6,13 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 
 import { Roles } from '@application/decorators/roles.decorator';
 import { CreateProductDto } from '@application/dtos/product/create-product.dto';
+import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { UpdateProductDto } from '@application/dtos/product/update-product.dto';
 import { Role } from '@application/enums/roles';
 import { ProductService } from '@application/services/product.service';
@@ -22,8 +24,8 @@ export class ProductController {
 
   @Roles(Role.ADMIN, Role.SELLER, Role.USER)
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAll(@Query() filters: ProductFiltersDto) {
+    return this.productService.findAll(filters);
   }
 
   @Roles(Role.ADMIN, Role.SELLER, Role.USER)
