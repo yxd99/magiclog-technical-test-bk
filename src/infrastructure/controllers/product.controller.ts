@@ -10,6 +10,7 @@ import {
   Req,
 } from '@nestjs/common';
 
+import { Public } from '@application/decorators/public.decorator';
 import { Roles } from '@application/decorators/roles.decorator';
 import { CreateProductDto } from '@application/dtos/product/create-product.dto';
 import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
@@ -22,13 +23,13 @@ import { ProductService } from '@application/services/product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Roles(Role.ADMIN, Role.SELLER, Role.USER)
+  @Public()
   @Get()
   findAll(@Query() filters: ProductFiltersDto) {
     return this.productService.findAll(filters);
   }
 
-  @Roles(Role.ADMIN, Role.SELLER, Role.USER)
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
