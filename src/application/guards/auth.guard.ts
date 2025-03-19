@@ -25,7 +25,21 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
-    if (!token) throw new UnauthorizedException('');
+    if (!token) throw new UnauthorizedException('Token missing');
+
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: envs.JWT_SECRET,
+      });
+
+      request.user = {
+        id: payload.id,
+        email: payload.email,
+        role: payload.role,
+      };
+    } catch {
+      throw new UnauthorizedException('Invalid token');
+    }
 
     return true;
   }
