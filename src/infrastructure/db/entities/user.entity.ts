@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { Role } from '@root/application/enums/roles';
+import { Role } from '@application/enums/roles';
+
+import { ProductEntity } from './product.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -28,7 +31,7 @@ export class UserEntity {
 
   @Column({
     enum: Role,
-    default: Role.USER,
+    default: Role.SELLER,
   })
   roles: Role;
 
@@ -37,4 +40,7 @@ export class UserEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => ProductEntity, (product) => product.user)
+  products: ProductEntity[];
 }

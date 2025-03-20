@@ -6,8 +6,8 @@ export class User {
     public readonly id: string | null,
     public name: string,
     public email: string,
-    public password: string,
-    public role: Role,
+    public password?: string,
+    public roles?: Role,
   ) {}
 
   static async create(data: Partial<User>): Promise<User> {
@@ -17,7 +17,7 @@ export class User {
       data.name,
       data.email,
       password,
-      data.role,
+      data.roles,
     );
   }
 
