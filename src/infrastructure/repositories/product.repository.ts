@@ -164,6 +164,6 @@ export class ProductRepositoryImpl implements ProductRepository {
       withDeleted: true,
     });
 
-    return entities.map(ProductMapper.toDomain);
+    return entities.map(ProductMapper.toAdminDomain);
   }
 }

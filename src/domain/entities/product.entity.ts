@@ -8,6 +8,9 @@ export class Product {
     public stock: number,
     public price: number,
     public user: User,
+    public createdAt?: Date,
+    public updatedAt?: Date,
+    public deletedAt?: Date,
   ) {}
 
   static create(data: Partial<Product>): Product {
@@ -18,6 +21,9 @@ export class Product {
       data.stock,
       data.price,
       data.user,
+      data.createdAt,
+      data.updatedAt,
+      data.deletedAt,
     );
   }
 

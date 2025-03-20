@@ -35,4 +35,20 @@ export class ProductMapper {
 
     return entity;
   }
+
+  static toAdminDomain(data: ProductEntity): Product {
+    return new Product(
+      data.id,
+      data.name,
+      data.sku,
+      data.stock,
+      data.price,
+      data.user
+        ? new User(data.user.id, data.user.name, data.user.email)
+        : null,
+      data.createdAt,
+      data.updatedAt,
+      data.deletedAt,
+    );
+  }
 }
