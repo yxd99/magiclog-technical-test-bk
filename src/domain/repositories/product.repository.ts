@@ -1,3 +1,4 @@
+import { ProductAdminFiltersDto } from '@application/dtos/product/product-admin-filters.dto';
 import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { Product } from '@domain/entities/product.entity';
 
@@ -16,4 +17,6 @@ export abstract class ProductRepository {
     userId: string,
     filters: ProductFiltersDto,
   ): Promise<Product[]>;
+
+  abstract findAllAdmin(filters: ProductAdminFiltersDto): Promise<Product[]>;
 }

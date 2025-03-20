@@ -8,6 +8,7 @@ import {
   Repository,
 } from 'typeorm';
 
+import { ProductAdminFiltersDto } from '@application/dtos/product/product-admin-filters.dto';
 import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { Product } from '@domain/entities/product.entity';
 import { ProductRepository } from '@domain/repositories/product.repository';
@@ -39,10 +40,6 @@ export class ProductRepositoryImpl implements ProductRepository {
 
     if (restFilters.maxPrice !== undefined) {
       where.price = LessThanOrEqual(restFilters.maxPrice);
-    }
-
-    if (restFilters.userEmail) {
-      where.user = { email: ILike(`%${restFilters.userEmail}%`) };
     }
 
     const entities = await this.productRepository.find({
@@ -85,6 +82,7 @@ export class ProductRepositoryImpl implements ProductRepository {
     if (!entity) {
       return null;
     }
+    await this.productRepository.update(id, { sku: Date.now().toString() });
     await this.productRepository.softDelete({ id });
     return entity;
   }
@@ -120,6 +118,50 @@ export class ProductRepositoryImpl implements ProductRepository {
       order: {
         createdAt: 'DESC',
       },
+    });
+
+    return entities.map(ProductMapper.toDomain);
+  }
+
+  async findAllAdmin(filters: ProductAdminFiltersDto) {
+    const { page = 1, limit = 15, ...restFilters } = filters;
+    const where: FindOptionsWhere<ProductEntity> = {};
+
+    if (restFilters.name) {
+      where.name = ILike(`%${restFilters.name}%`);
+    }
+
+    if (restFilters.sku) {
+      where.sku = ILike(`%${restFilters.sku}%`);
+    }
+
+    if (restFilters.minPrice !== undefined) {
+      where.price = MoreThanOrEqual(restFilters.minPrice);
+    }
+
+    if (restFilters.maxPrice !== undefined) {
+      where.price = LessThanOrEqual(restFilters.maxPrice);
+    }
+
+    if (restFilters.userEmail || restFilters.userName) {
+      where.user = {};
+      if (restFilters.userEmail) {
+        where.user.email = ILike(`%${restFilters.userEmail}%`);
+      }
+      if (restFilters.userName) {
+        where.user.name = ILike(`%${restFilters.userName}%`);
+      }
+    }
+
+    const entities = await this.productRepository.find({
+      where,
+      relations: ['user'],
+      skip: (page - 1) * limit,
+      take: limit,
+      order: {
+        createdAt: 'DESC',
+      },
+      withDeleted: true,
     });
 
     return entities.map(ProductMapper.toDomain);

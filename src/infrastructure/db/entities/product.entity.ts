@@ -5,12 +5,14 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
 
 @Entity('products')
+@Unique(['sku', 'user'])
 export class ProductEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -1,15 +1,18 @@
 import {
+  ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 
 import { CreateProductDto } from '@application/dtos/product/create-product.dto';
+import { ProductAdminFiltersDto } from '@application/dtos/product/product-admin-filters.dto';
 import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
 import { UpdateProductDto } from '@application/dtos/product/update-product.dto';
 import { Product } from '@domain/entities/product.entity';
 import { ProductRepository } from '@domain/repositories/product.repository';
 import { UserRepository } from '@domain/repositories/user.repository';
+import { UNIQUE_VIOLATION } from '@infrastructure/utils/constants/postgres-error';
 
 @Injectable()
 export class ProductService {
@@ -35,11 +38,18 @@ export class ProductService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const entity = Product.create({
-      ...dto,
-      user,
-    });
-    return this.productRepository.create(entity);
+    try {
+      const entity = Product.create({
+        ...dto,
+        user,
+      });
+      return await this.productRepository.create(entity);
+    } catch (error) {
+      if (error.code === UNIQUE_VIOLATION) {
+        throw new ConflictException('SKU is already registered for this user');
+      }
+      throw error;
+    }
   }
 
   async update(productId: string, dto: UpdateProductDto, userId: string) {
@@ -64,5 +74,9 @@ export class ProductService {
     if (!isOwner) {
       throw new UnauthorizedException('You arent the owner of this product');
     }
+  }
+
+  async findAllAdmin(filters: ProductAdminFiltersDto) {
+    return this.productRepository.findAllAdmin(filters);
   }
 }

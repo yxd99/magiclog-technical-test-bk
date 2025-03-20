@@ -27,10 +27,11 @@ export class ResponseInterceptor implements NestInterceptor {
         return result;
       }),
       catchError((error) => {
+        const status = error.status || 500;
         const response = {
-          code: error.status,
-          name: getReasonPhrase(error.status),
-          data: error.response?.message,
+          code: status,
+          name: getReasonPhrase(status),
+          data: error.response?.message ?? {},
         };
         return throwError(() => new HttpException(response, error.status));
       }),

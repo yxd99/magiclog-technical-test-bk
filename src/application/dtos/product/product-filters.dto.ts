@@ -25,9 +25,4 @@ export class ProductFiltersDto extends PaginationDto {
   @Min(0)
   @Expose({ name: 'max_price' })
   maxPrice: number;
-
-  @IsOptional()
-  @IsString()
-  @Expose({ name: 'user_email' })
-  userEmail: string;
 }
