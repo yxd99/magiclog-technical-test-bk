@@ -6,7 +6,8 @@ import * as apiInfo from './api-info';
 const config = new DocumentBuilder()
   .setTitle(apiInfo.TITLE)
   .setDescription(apiInfo.DESCRIPTION)
-  .setVersion(apiInfo.VERSION);
+  .setVersion(apiInfo.VERSION)
+  .addBearerAuth();
 
 apiInfo.SERVERS.forEach((server) => {
   config.addServer(server.host, server.description);
