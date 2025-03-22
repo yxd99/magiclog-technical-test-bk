@@ -4,6 +4,7 @@ import {
   ExecutionContext,
   CallHandler,
   HttpException,
+  Logger,
 } from '@nestjs/common';
 import { getReasonPhrase } from 'http-status-codes';
 import { throwError } from 'rxjs';
@@ -31,6 +32,7 @@ export class ResponseInterceptor implements NestInterceptor {
         return result;
       }),
       catchError((error) => {
+        Logger.error(error);
         const status = error.status || 500;
         const response = {
           code: status,
