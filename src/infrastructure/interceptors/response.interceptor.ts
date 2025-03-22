@@ -24,6 +24,10 @@ export class ResponseInterceptor implements NestInterceptor {
           data: data || null,
         };
 
+        if (statusCode >= 400) {
+          throw new HttpException(result.data, statusCode);
+        }
+
         return result;
       }),
       catchError((error) => {
