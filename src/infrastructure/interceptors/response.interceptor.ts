@@ -7,7 +7,6 @@ import {
   Logger,
 } from '@nestjs/common';
 import { getReasonPhrase } from 'http-status-codes';
-import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable()
@@ -39,7 +38,7 @@ export class ResponseInterceptor implements NestInterceptor {
           name: getReasonPhrase(status),
           data: error.response?.message ?? {},
         };
-        return throwError(() => new HttpException(response, error.status));
+        throw new HttpException(response, status);
       }),
     );
   }
