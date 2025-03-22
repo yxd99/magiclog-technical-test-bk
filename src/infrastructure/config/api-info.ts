@@ -7,7 +7,7 @@ export const PREFIX = 'api';
 export const { PORT } = envs;
 export const SERVERS = [
   {
-    host: `http://localhost:${PORT}/api`,
-    description: 'Local',
+    host: envs.PROJECT_URL,
+    description: envs.NODE_ENV,
   },
 ];

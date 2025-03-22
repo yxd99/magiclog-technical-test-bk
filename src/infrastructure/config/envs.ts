@@ -8,6 +8,7 @@ export enum Environments {
 }
 
 export const envSchema = z.object({
+  PROJECT_URL: z.string(),
   PORT: z.string().default('3000'),
   NODE_ENV: z.nativeEnum(Environments),
   DB_HOST: z.string().default('localhost'),
