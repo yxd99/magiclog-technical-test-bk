@@ -1,5 +1,5 @@
 > [!IMPORTANT]  
-> Project is deployed [here](https://magiclog-technical-test-bk.onrender.com)
+> Project is deployed [here](https://magiclog-technical-test-bk.onrender.com/api)
 > 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
