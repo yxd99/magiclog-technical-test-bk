@@ -27,7 +27,7 @@ This project serves as a technical test implementation, showcasing:
 
 1. Clone the repository
 ```bash
-$ git clone https://github.com/yxd99/magiclog-technical-test-bk
+$ git clone https://github.com/yxd99/magiclog-technical-test-bk.git
 ```
 2. Install dependencies:
 ```bash

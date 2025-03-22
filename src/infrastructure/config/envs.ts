@@ -20,7 +20,6 @@ export const envSchema = z.object({
   DECORATOR_ROLES_KEY: z.string(),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string(),
-  BCRYPT_SALT_ROUNDS: z.coerce.number(),
 });
 
 const { data, error } = envSchema.safeParse(process.env);

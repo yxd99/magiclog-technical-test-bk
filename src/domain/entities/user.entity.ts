@@ -1,5 +1,5 @@
 import { Role } from '@application/enums/roles';
-import * as bcrypt from '@infrastructure/utils/bcrypt';
+import * as encrypt from '@infrastructure/utils/encrypt';
 
 export class User {
   constructor(
@@ -11,7 +11,7 @@ export class User {
   ) {}
 
   static async create(data: Partial<User>): Promise<User> {
-    const password = await bcrypt.encrypt(data.password);
+    const password = await encrypt.encrypt(data.password);
     return new User(
       data.id ?? null,
       data.name,
@@ -22,6 +22,6 @@ export class User {
   }
 
   async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
+    return encrypt.compare(password, this.password);
   }
 }
