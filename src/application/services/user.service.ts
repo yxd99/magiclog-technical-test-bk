@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
+import { SignUpUserDto } from '@application/dtos/auth/signup-user.dto';
 import { ProductFiltersDto } from '@application/dtos/product/product-filters.dto';
-import { SignUpUserDto } from '@application/dtos/user/signup-user.dto';
 import { User } from '@domain/entities/user.entity';
 import { UserRepository } from '@domain/repositories/user.repository';
 
